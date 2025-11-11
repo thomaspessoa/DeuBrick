@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold">Todos os Produtos</h1>
-        <form method="GET" action="{{ url_for('main.home') }}">
+    <div class="flex flex-col sm:flex-row justify-between items-center">
+        <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-0">Todos os Produtos</h1>
+        <form method="GET" action="{{ url_for('main.home') }}" class="w-full sm:w-auto">
             <input type="hidden" name="search" value="{{ search_query or '' }}">
-            <select name="city" onchange="this.form.submit()" class="py-2 px-4 border rounded-md">
+            <select name="city" onchange="this.form.submit()" class="w-full py-2 px-4 border rounded-md">
                 <option value="">Todas as Cidades</option>
                 <option value="Restinga Sêca" {% if city_filter == 'Restinga Sêca' %}selected{% endif %}>Restinga Sêca</option>
                 <option value="Agudo" {% if city_filter == 'Agudo' %}selected{% endif %}>Agudo</option>
