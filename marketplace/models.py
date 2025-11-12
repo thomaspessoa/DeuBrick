@@ -36,12 +36,24 @@ class Product(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     is_sold = db.Column(db.Boolean, nullable=False, default=False)
     phone_number = db.Column(db.String(20), nullable=True)
     city = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     ratings = db.relationship('Rating', backref='product', lazy=True)
+    images = db.relationship('ProductImage', backref='product', lazy=True, cascade="all, delete-orphan")
+
+    @property
+    def image_file(self):
+        if self.images:
+            return self.images[0].image_file
+        return 'default.jpg'
+
+
+class ProductImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image_file = db.Column(db.String(20), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
 
 
 class Rating(db.Model):

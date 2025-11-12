@@ -10,12 +10,10 @@
     <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{{ url_for('main.home') }}" class="text-2xl font-bold text-gray-800">DeuBrick</a>
-                    </div>
+                <div class="flex items-center">
+                    <a href="{{ url_for('main.home') }}" class="text-2xl font-bold text-gray-800">DeuBrick</a>
                 </div>
-                <div class="flex-grow flex items-center justify-center">
+                <div class="hidden sm:flex sm:items-center sm:ml-6">
                     <form method="GET" action="{{ url_for('main.home') }}" class="w-full max-w-lg">
                         <div class="flex items-center border-b-2 border-indigo-500 py-2">
                             <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" name="search" placeholder="Buscar produtos...">
@@ -25,7 +23,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="flex items-center">
+                <div class="hidden sm:flex sm:items-center">
                     {% if current_user.is_authenticated %}
                         <a href="{{ url_for('main.logout') }}" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Sair</a>
                         <a href="{{ url_for('main.add_product') }}" class="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -38,6 +36,33 @@
                         </a>
                     {% endif %}
                 </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button id="menu-button" type="button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                        <span class="sr-only">Abrir menu principal</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <form method="GET" action="{{ url_for('main.home') }}" class="w-full">
+                    <div class="flex items-center border-b-2 border-indigo-500 py-2">
+                        <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" name="search" placeholder="Buscar produtos...">
+                        <button class="flex-shrink-0 bg-indigo-500 hover:bg-indigo-700 border-indigo-500 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.logout') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Sair</a>
+                    <a href="{{ url_for('main.add_product') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Anunciar Produto</a>
+                {% else %}
+                    <a href="{{ url_for('main.login') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Entrar</a>
+                    <a href="{{ url_for('main.register') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Cadastrar</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -55,5 +80,15 @@
         {% block content %}{% endblock %}
     </main>
 
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function () {
+            var mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

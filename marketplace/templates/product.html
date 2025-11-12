@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="bg-white shadow-md rounded-lg overflow-hidden">
-    <img class="h-96 w-full object-cover" src="{{ url_for('static', filename='product_pics/' + product.image_file) }}" alt="{{ product.title }}">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        {% for image in product.images %}
+        <img class="h-96 w-full object-cover" src="{{ url_for('static', filename='product_pics/' + image.image_file) }}" alt="{{ product.title }}">
+        {% endfor %}
+    </div>
     <div class="p-6">
         <h1 class="text-3xl font-bold text-gray-800">{{ product.title }}</h1>
         <p class="text-2xl text-gray-600 mt-2">R$ {{ "%.2f"|format(product.price) }}</p>

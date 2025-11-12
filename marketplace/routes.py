@@ -4,7 +4,7 @@ from PIL import Image
 from flask import Blueprint, render_template, url_for, flash, redirect, request, abort, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from marketplace import db
-from marketplace.models import User, Product, Rating
+from marketplace.models import User, Product, Rating, ProductImage
 from marketplace.forms import RegistrationForm, LoginForm, ProductForm, RatingForm
 
 main = Blueprint('main', __name__)
@@ -79,15 +79,20 @@ def save_picture(form_picture):
 def add_product():
     form = ProductForm()
     if form.validate_on_submit():
-        picture_file = save_picture(form.picture.data)
         product = Product(title=form.title.data,
                           description=form.description.data,
                           price=form.price.data,
                           phone_number=form.phone_number.data,
                           city=form.city.data,
-                          image_file=picture_file,
                           author=current_user)
         db.session.add(product)
+        db.session.commit()
+
+        for picture_file in form.pictures.data:
+            picture_fn = save_picture(picture_file)
+            image = ProductImage(image_file=picture_fn, product_id=product.id)
+            db.session.add(image)
+
         db.session.commit()
         flash('Seu produto foi anunciado!', 'success')
         return redirect(url_for('main.home'))
@@ -110,9 +115,13 @@ def update_product(product_id):
         abort(403)
     form = ProductForm()
     if form.validate_on_submit():
-        if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            product.image_file = picture_file
+        if form.pictures.data:
+            for image in product.images:
+                db.session.delete(image)
+            for picture_file in form.pictures.data:
+                picture_fn = save_picture(picture_file)
+                image = ProductImage(image_file=picture_fn, product_id=product.id)
+                db.session.add(image)
         product.title = form.title.data
         product.description = form.description.data
         product.price = form.price.data
