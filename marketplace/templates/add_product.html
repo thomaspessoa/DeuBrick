@@ -68,11 +68,11 @@
                 </div>
 
                 <div class="mb-6">
-                    {{ form.picture.label(class="block text-gray-700 text-sm font-bold mb-2") }}
-                    {{ form.picture(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline") }}
-                    {% if form.picture.errors %}
+                    {{ form.pictures.label(class="block text-gray-700 text-sm font-bold mb-2") }}
+                    {{ form.pictures(class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", multiple="multiple") }}
+                    {% if form.pictures.errors %}
                         <div class="text-red-500 text-xs italic mt-2">
-                            {% for error in form.picture.errors %}
+                            {% for error in form.pictures.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
                         </div>

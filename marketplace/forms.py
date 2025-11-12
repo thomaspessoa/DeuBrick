@@ -34,13 +34,15 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Entrar')
 
 
+from wtforms import MultipleFileField
+
 class ProductForm(FlaskForm):
     title = StringField('Título', validators=[DataRequired()])
     description = TextAreaField('Descrição', validators=[DataRequired()])
     price = FloatField('Preço', validators=[DataRequired()])
     phone_number = StringField('Telefone (WhatsApp)', validators=[DataRequired()])
     city = SelectField('Cidade', choices=[('Restinga Sêca', 'Restinga Sêca'), ('Agudo', 'Agudo'), ('Nova Palma', 'Nova Palma'), ('Santa Maria', 'Santa Maria')], validators=[DataRequired()])
-    picture = FileField('Foto do Produto', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
+    pictures = MultipleFileField('Fotos do Produto', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Anunciar')
 
 
